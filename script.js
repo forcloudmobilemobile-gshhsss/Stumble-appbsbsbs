@@ -9,6 +9,7 @@ searchBtn.addEventListener('click', async () => {
     const username = usernameInput.value.trim();
     if (!username) return;
 
+    // Reset UI for loading state
     resultBox.classList.remove('hidden');
     playerNameDisplay.textContent = 'Searching...';
     playerCrownsDisplay.textContent = '-';
@@ -24,28 +25,25 @@ searchBtn.addEventListener('click', async () => {
 
         if (!response.ok) throw new Error('Network response was not ok');
         
-        const data = await response.json();
+        const result = await response.json();
         
-        let crowns = '0';
-        let foundUsername = username;
+        // Match the updated structure shown in the Discord logs
+        if (result && result.success && result.data) {
+            const playerData = result.data;
+            
+            // Clean out color codes (like <#0bf>) from usernames if they exist
+            const cleanName = playerData.userName ? playerData.userName.replace(/<#.*?>/g, '') : username;
+            const crowns = playerData.crowns !== undefined ? playerData.crowns : '0';
 
-        // Parse StumbleLabs data
-        if (Array.isArray(data) && data.length > 0) {
-            crowns = data[0].Crowns ?? data[0].crowns ?? 'Not Found';
-            foundUsername = data[0].Username ?? data[0].username ?? username;
-        } else if (data && typeof data === 'object') {
-            crowns = data.Crowns ?? data.crowns ?? data.user?.crowns ?? 'Not Found';
-            foundUsername = data.Username ?? data.username ?? data.user?.username ?? username;
+            playerNameDisplay.textContent = cleanName;
+            playerCrownsDisplay.textContent = crowns;
         } else {
-            throw new Error('Not found');
+            throw new Error(result.message || 'Player not found');
         }
-
-        playerNameDisplay.textContent = foundUsername;
-        playerCrownsDisplay.textContent = crowns;
 
     } catch (error) {
         playerNameDisplay.textContent = 'Error';
         playerCrownsDisplay.textContent = '-';
-        errorMsg.textContent = 'Failed to fetch player.';
+        errorMsg.textContent = 'Player not found or API error.';
     }
-})
+});
