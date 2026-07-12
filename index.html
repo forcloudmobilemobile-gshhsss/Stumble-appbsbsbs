@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stumble Guys Player Search</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Player Search</h1>
+        <div class="search-box">
+            <input type="text" id="usernameInput" placeholder="Enter Username...">
+            <button id="searchBtn">Search</button>
+        </div>
+        
+        <div id="result" class="result-box hidden">
+            <h2 id="playerName"></h2>
+            <p>👑 Crowns: <span id="playerCrowns"></span></p>
+            <p id="errorMsg" class="error"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
