@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         const response = await fetch('https://api.stumblelabs.net/api/live/users/search', {
             method: 'POST',
             headers: {
-                'x-api-key': API_KEY,
+                'x-api-key': rhyxom-9b4eb4926911b12c316be75213eaq099,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ username })
